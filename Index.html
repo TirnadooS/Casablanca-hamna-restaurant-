@@ -71,7 +71,6 @@
       color: #666;
     }
 
-    /* Стикеры */
     .sticker {
       position: absolute;
       width: 50px;
@@ -84,10 +83,76 @@
       0% { transform: translateY(0) scale(0.5); opacity: 1; }
       100% { transform: translateY(-150px) scale(1); opacity: 0; }
     }
+
+    /* Popup for bordvalg */
+    #tableModal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #tableModal div {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 300px;
+    }
+
+    #tableSelect {
+      padding: 10px;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    #confirmBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #e67e22;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+
+  <!-- MODAL -->
+  <div id="tableModal">
+    <div>
+      <h3>Velg bord eller takeaway</h3>
+      <select id="tableSelect">
+        <option disabled selected>Velg...</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="Takeaway">🍱 Takeaway</option>
+      </select>
+      <button id="confirmBtn" onclick="confirmTable()">Bekreft</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
   <div class="container">
+    <div id="selectedTableInfo"></div>
+
     <h1>Casablanca Hamna Restaurant</h1>
     <p>Velkommen! Se vår meny 👇</p>
 
@@ -116,6 +181,22 @@
   </div>
 
   <script>
+    let selectedTable = "";
+
+    function confirmTable() {
+      const select = document.getElementById("tableSelect");
+      selectedTable = select.value;
+      if (!selectedTable) {
+        alert("Vennligst velg bord eller takeaway");
+        return;
+      }
+
+      document.getElementById("tableModal").style.display = "none";
+
+      const info = document.getElementById("selectedTableInfo");
+      info.innerHTML = `🪑 Du valgte: <strong>${selectedTable}</strong>`;
+    }
+
     function launchStickers(event, images) {
       const btn = event.currentTarget;
       const rect = btn.getBoundingClientRect();
